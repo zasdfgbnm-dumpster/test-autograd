@@ -23,7 +23,7 @@ class MyCustomFunc : public torch::autograd::Function<MyCustomFunc> {
 };
 
 Tensor forward_autograd(Tensor x) {
-    MyCustomFunc::apply(x);
+   return MyCustomFunc::apply(x);
 }
 
 TORCH_LIBRARY(test, m) {
