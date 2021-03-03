@@ -9,10 +9,6 @@ struct Container : torch::CustomClassHolder {
   Container(Tensor x):x(x) {}
 };
 
-Tensor forward_cpu(Tensor x) {
-    return torch::ones_like(x);
-}
-
 class MyCustomFunc : public torch::autograd::Function<MyCustomFunc> {
  public:
   static Tensor forward(torch::autograd::AutogradContext* ctx, Tensor x) {
@@ -34,11 +30,7 @@ Tensor forward_autograd(Tensor x) {
 TORCH_LIBRARY(test, m) {
   m.class_<Container>("Container").def(
       torch::init<Tensor>());
-  m.def("forward", forward_cpu);
-}
-
-TORCH_LIBRARY_IMPL(test, DefaultBackend, m) {
-  m.impl("forward", forward_cpu);
+  m.def("forward", forward_autograd);
 }
 
 TORCH_LIBRARY_IMPL(test, Autograd, m) {
