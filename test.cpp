@@ -17,8 +17,9 @@ class MyCustomFunc : public torch::autograd::Function<MyCustomFunc> {
  public:
   static Tensor forward(torch::autograd::AutogradContext* ctx, Tensor x) {
       at::AutoNonVariableTypeMode g;
-      ctx->saved_data["x"] = c10::make_intrusive<Container>(torch::randn_like(x));
-      return forward_cpu(x);
+      auto ptr = c10::make_intrusive<Container>(torch::randn_like(x));
+      ctx->saved_data["x"] = ptr;
+      return ptr->x;
   }
   static tensor_list backward(torch::autograd::AutogradContext* ctx, tensor_list grad_outputs) {
       at::AutoNonVariableTypeMode g;
