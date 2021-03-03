@@ -18,7 +18,6 @@ class MyCustomFunc : public torch::autograd::Function<MyCustomFunc> {
       return ptr->x;
   }
   static tensor_list backward(torch::autograd::AutogradContext* ctx, tensor_list grad_outputs) {
-      at::AutoNonVariableTypeMode g;
       return {grad_outputs[0] * MyCustomFunc::apply(ctx->saved_data["x"].toCustomClass<Container>()->x)};
   }
 };
