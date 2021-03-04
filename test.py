@@ -4,10 +4,7 @@ import glob
 
 g = glob.glob("build/*/*.so")
 for f in g:
-    if f.endswith(".so"):
-        break
-
-torch.ops.load_library(f)
+    torch.ops.load_library(f)
 
 for i in tqdm.trange(100000):
     x = torch.zeros(1024*1024*512, requires_grad=True)
