@@ -1,9 +1,14 @@
 import torch
 import pynvml
 import os
-import torch.utils.cpp_extension
+import glob
 
-torch.ops.load_library('build/lib.macosx-11-arm64-3.9/test.cpython-39-darwin.so')
+g = glob.glob("build/*/*.so")
+for f in g:
+    if f.endswith(".so"):
+        break
+
+torch.ops.load_library(f)
 
 def checkgpu(device=None):
     i = device if device else torch.cuda.current_device()
