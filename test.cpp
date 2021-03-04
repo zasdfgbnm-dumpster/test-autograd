@@ -20,9 +20,8 @@ class MyCustomFunc : public torch::autograd::Function<MyCustomFunc> {
       Container container = {torch::randn_like(x)};
       auto ptr = c10::make_intrusive<Container>(container);
       ctx->saved_data["x"] = ptr;
-      Tensor t = container.x.clone().detach();
-      return container.x;  // blow up, release_resources() got called, but ptr memory doesn't got free
-      // return t;         // ptr memory got free
+      // return container.x;  // blow up, release_resources() got called, but ptr memory doesn't got free
+      return container.x.clone().detach();         // ptr memory got free
   }
   static tensor_list backward(torch::autograd::AutogradContext* ctx, tensor_list grad_outputs) {
       return {grad_outputs[0] * MyCustomFunc::apply(ctx->saved_data["x"].toCustomClass<Container>()->x)};

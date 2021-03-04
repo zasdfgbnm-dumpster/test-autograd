@@ -5,7 +5,6 @@ import torch.utils.cpp_extension
 
 torch.ops.load_library('build/lib.macosx-11-arm64-3.9/test.cpython-39-darwin.so')
 
-
 def checkgpu(device=None):
     i = device if device else torch.cuda.current_device()
     t = torch.cuda.get_device_properties(i).total_memory
@@ -21,8 +20,8 @@ def checkgpu(device=None):
     return f'{(info.used / 1024 / 1024):.1f}MB'
 
 
-for i in range(10):
-    x = torch.zeros(1024*1024*50, requires_grad=True, device='cuda')
+for i in range(5):
+    x = torch.zeros(1024*1024*80, requires_grad=True, device='cuda')
     y = torch.ops.test1.forward(x)
     g = torch.autograd.grad(y, x, y, create_graph=True, retain_graph=True)[0]
     g.sum().backward()
